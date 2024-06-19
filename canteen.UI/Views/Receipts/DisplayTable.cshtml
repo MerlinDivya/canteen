@@ -1,0 +1,36 @@
+﻿@model IEnumerable<canteen.Data.Models.Domain.Receipts>
+
+<h2>Receipts Table</h2>
+
+<a href="/Receipts/Add" class="btn btn-info">Add Receipt</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Description</th>
+            <th>Receipt Date</th>
+            <th>Rate</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Action</th> <!-- Add a new column for actions -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var receipt in Model)
+        {
+            <tr>
+                <td>@receipt.item_number</td>
+                <td>@receipt.description</td>
+                <td>@receipt.rect_date.ToString("yyyy-MM-dd")</td>
+                <td>@receipt.rate</td>
+                <td>@receipt.quantity</td>
+                <td>@receipt.unit</td>
+                <td>
+                    <a href="/Receipts/Edit/@receipt.Id" class="btn btn-primary">Edit</a>
+                    <a href="/Receipts/Delete/@receipt.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

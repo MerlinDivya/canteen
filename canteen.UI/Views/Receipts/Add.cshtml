@@ -1,0 +1,91 @@
+﻿@model canteen.Data.Models.Domain.Receipts
+
+<h2>Add Receipt</h2>
+<a href="/Receipts/DisplayTable" class="btn btn-primary">DisplayTable</a>
+
+<form asp-action="Add" method="post" asp-validation-summary="All" id="addReceiptForm">
+    <div class="form-group">
+        <label asp-for="description">Description:</label>
+        <select asp-for="description" name="description" class="form-control" id="description" data-val="true" data-val-required="The Description field is required.">
+            <option value="">Select Description</option>
+            @if (ViewData["DescriptionOptions"] != null)
+            {
+                var descriptionOptions = ViewData["DescriptionOptions"] as List<SelectListItem>;
+                foreach (var option in descriptionOptions)
+                {
+                    <option value="@option.Value">@option.Text</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="item_number">Item Number:</label>
+        <input asp-for="item_number" class="form-control" id="item_number" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="rect_date">Receipt Date:</label>
+        <input asp-for="rect_date" class="form-control" type="date" data-val="true" data-val-required="The Receipt Date field is required." />
+        <span asp-validation-for="rect_date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="rate">Rate:</label>
+        <input asp-for="rate" class="form-control" type="number" data-val="true" data-val-required="The Rate field is required." />
+        <span asp-validation-for="rate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="quantity">Quantity:</label>
+        <input asp-for="quantity" class="form-control" type="number" data-val="true" data-val-required="The Quantity field is required." />
+        <span asp-validation-for="quantity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="unit">Unit:</label>
+        <input asp-for="unit" class="form-control" id="unit" readonly />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Receipt</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        // Add a change event listener to the description dropdown
+        $("#description").change(function () {
+            var selectedDescription = $(this).val();
+
+            // Make an AJAX request to retrieve item_number and unit based on the selected description
+            $.ajax({
+                url: "/Receipts/GetItemNumberAndUnit",
+                type: "GET",
+                data: { description: selectedDescription },
+                success: function (data) {
+                    // Update the item_number and unit fields with the retrieved data
+                    $("#item_number").val(data.item_number);
+                    $("#unit").val(data.unit);
+                },
+                error: function () {
+                    // Handle errors if needed
+                }
+            });
+        });
+
+        // Add the form submission event handler here
+        $("#addReceiptForm").submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Your form processing code here, including the AJAX request
+            $.ajax({
+                url: "/Receipts/Add", // Specify the correct URL for your form submission
+                type: "POST",
+                data: $(this).serialize(), // Serialize the form data
+                success: function (response) {
+                    // Handle the response from the server (e.g., display a success message)
+                    // You can update the page or show a success message as needed
+                    alert("Receipt added successfully!"); // Example alert message
+                },
+                error: function () {
+                    // Handle errors if needed
+                }
+            });
+        });
+    });
+</script>
+}

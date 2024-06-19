@@ -1,0 +1,35 @@
+﻿@model IEnumerable<canteen.Data.Models.Domain.Customer>
+
+
+@{
+
+}
+
+<h3>Items List</h3>
+<div class="my-2">
+    <a href="/Customer/Add" class="btn btn-info">Add More</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>item_number</th>
+                <th>description</th>
+                <th>unit</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.item_number</td>
+                    <td>@customer.description</td>
+                    <td>@customer.unit</td>
+                    <td>
+                        <a href="/Customer/Edit?id=@customer.Id" class="btn btn-success">Edit</a>
+                        <a href="/Customer/Delete?id=@customer.Id" class="btn btn-Danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

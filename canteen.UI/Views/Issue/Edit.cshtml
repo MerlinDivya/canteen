@@ -1,0 +1,144 @@
+﻿@model canteen.Data.Models.Domain.Issue
+
+@{
+    ViewData["Title"] = "Edit Issue";
+}
+
+<h3>Edit Issue </h3>
+
+<a href="/Issue/DisplayTable" class="btn btn-primary">Display Table</a>
+
+<form asp-action="Edit" method="post" asp-validation-summary="All" id="EditIssueForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label for="descriptionDropdown">Select Description:</label>
+        <select asp-for="description" asp-items="ViewBag.DescriptionOptions" class="form-control" id="descriptionDropdown"></select>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+
+    <!-- Display Receipts Data based on the selected description -->
+    <div id="receiptsData">
+        <!-- Table to display Receipts data -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Item Number</th>
+                    <th>Description</th>
+                    <th>Rect Date</th>
+                    <th>Rate</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Receipts data rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <label for="item_number">Item Number:</label>
+        <input type="text" asp-for="item_number" class="form-control" id="item_number" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="rect_date">Rect Date:</label>
+        <input type="text" asp-for="rect_date" class="form-control" id="rect_date" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="rate">Rate:</label>
+        <input type="text" asp-for="rate" class="form-control" id="rate" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="text" asp-for="quantity" class="form-control" id="quantity" />
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="issd_date">Issue Date:</label>
+        <input type="date" asp-for="issd_date" class="form-control" id="issd_date" title="Issue Date" placeholder="Select Issue Date" />
+    </div>
+
+    <div class="form-group">
+        <label for="categoryDropdown">Category:</label>
+        <select asp-for="category" class="form-control" id="categoryDropdown" title="Category">
+            <option value="">Select Category</option>
+            <option value="Bakery">Bakery</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Food">Food</option>
+        </select>
+        <span asp-validation-for="category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Edit</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#descriptionDropdown').change(function () {
+                var selectedDescription = $(this).val();
+                if (selectedDescription) {
+                    // Send an AJAX request to retrieve the data for the selected description
+                    $.get('@Url.Action("GetReceiptsDataByDescription", "Issue")', { description: selectedDescription }, function (data) {
+                        if (data) {
+                            // Display the retrieved data in the table
+                            $('#receiptsData tbody').html(data);
+                        }
+                    });
+                } else {
+                    // Clear the table if no description is selected
+                    $('#receiptsData tbody').empty();
+                }
+            });
+
+            // Click event handler for radio buttons
+            $(document).on('click', 'input[type=radio][name=selectedReceipt]', function () {
+                if ($(this).is(':checked')) {
+                    var itemNumber = $(this).val();
+                    var rectDate = $(this).data('rect-date');
+                    var rate = $(this).data('rate');
+                    var quantity = $(this).data('quantity');
+
+                    // Populate the text boxes with the checked row's values
+                    $('#item_number').val(itemNumber);
+                    $('#rect_date').val(rectDate);
+                    $('#rate').val(rate);
+                    $('#quantity').val(quantity);
+                }
+            });
+
+            // Add the form submission event handler here
+            $("#EditIssueForm").submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Your form processing code here, including the AJAX request
+                $.ajax({
+                    url: "/Issue/Edit", // Specify the correct URL for your form submission
+                    type: "POST",
+                    data: $(this).serialize(), // Serialize the form data
+                    success: function (response) {
+                        // Handle the response from the server (e.g., display a success message)
+                        // You can update the page or show a success message as needed
+                        alert("Issue edited successfully!"); // Example alert message
+                    },
+                    error: function () {
+                        // Handle errors if needed
+                    }
+                });
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,165 @@
+﻿@model canteen.Data.Models.Domain.Issue
+
+@{
+    ViewData["Title"] = "Add Issue";
+}
+
+<h2>Add Issue</h2>
+
+<a href="/Issue/DisplayTable" class="btn btn-primary">Display Table</a>
+
+<form asp-action="Add" method="post" asp-validation-summary="All" id="addIssueForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label for="descriptionDropdown">Select Description:</label>
+        <select asp-for="description" asp-items="ViewBag.DescriptionOptions" class="form-control" id="descriptionDropdown"></select>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+
+    <!-- Display Receipts Data based on the selected description -->
+    <div id="receiptsData">
+        <!-- Table to display Receipts data -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Item Number</th>
+                    <th>Description</th>
+                    <th>Rect Date</th>
+                    <th>Rate</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Receipts data rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <label for="item_number">Item Number:</label>
+        <input type="text" asp-for="item_number" class="form-control" id="item_number" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="rect_date">Rect Date:</label>
+        <input type="text" asp-for="rect_date" class="form-control" id="rect_date" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="rate">Rate:</label>
+        <input type="text" asp-for="rate" class="form-control" id="rate" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="text" asp-for="quantity" class="form-control" id="quantity" />
+    </div>
+
+    <div class="form-group">
+        <label for="issd_date">Issue Date:</label>
+        <input type="date" asp-for="issd_date" class="form-control" id="issd_date" title="Issue Date" placeholder="Select Issue Date" />
+    </div>
+
+    <div class="form-group">
+        <label for="categoryDropdown">Category:</label>
+        <select asp-for="category" class="form-control" id="categoryDropdown" title="Category">
+            <option value="0">Select Category</option>
+            <option value="Bakery">Bakery</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Food">Food</option>
+        </select>
+        <span asp-validation-for="category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="MenuDropdown">Menu:</label>
+        <select asp-for="menuitem" class="form-control" id="MenuDropdown" title="Menu"></select>
+        <span asp-validation-for="menuitem" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#descriptionDropdown').change(function () {
+                var selectedDescription = $(this).val();
+                if (selectedDescription) {
+                    $.get('@Url.Action("GetReceiptsDataByDescription", "Issue")', { description: selectedDescription }, function (data) {
+                        if (data) {
+                            $('#receiptsData tbody').html(data);
+                        }
+                    });
+                } else {
+                    $('#receiptsData tbody').empty();
+                }
+            });
+
+            $("#categoryDropdown").change(function () {
+                var selectedCategory = $(this).val();
+                if (selectedCategory) {
+                    GetMenu(selectedCategory);
+                } else {
+                    // Clear menu dropdown if no category is selected
+                    $('#MenuDropdown').empty();
+                }
+            });
+
+            $(document).on('click', 'input[type=radio][name=selectedReceipt]', function () {
+                if ($(this).is(':checked')) {
+                    var itemNumber = $(this).val();
+                    var rectDate = $(this).data('rect-date');
+                    var rate = $(this).data('rate');
+                    var quantity = $(this).data('quantity');
+
+                    $('#item_number').val(itemNumber);
+                    $('#rect_date').val(rectDate);
+                    $('#rate').val(rate);
+                    $('#quantity').val(quantity);
+                }
+            });
+
+            $("#addIssueForm").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "/Issue/Add",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        alert("Issue added successfully!");
+                    },
+                    error: function () {
+                        // Handle errors if needed
+                    }
+                });
+            });
+
+            function GetMenu(category) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Issue/GetItemsForDropdown",
+                    data: {
+                        category: category
+                    },
+                    success: function (data) {
+                        var mySelect = $('#MenuDropdown');
+                        mySelect.empty();
+                        $.each(data, function (i, val) {
+                            mySelect.append(
+                                $('<option></option>').val(val).html(val)
+                            );
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<canteen.Data.Models.Domain.Issue>
+
+@{
+    ViewData["Title"] = "Issue Table";
+}
+
+<h2>Issue Table</h2>
+
+<p>
+    <a href="/Issue/Add" class="btn btn-info">Add Issue</a>
+</p>
+
+
+
+@if (ViewBag.SubmitMessage != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.SubmitMessage
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Description</th>
+            <th>Rect Date</th>
+            <th>Rate</th>
+            <th>Quantity</th>
+            <th>Issue Date</th>
+            <th>Category</th>
+            <th>Menu</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var issue in Model)
+        {
+            <tr>
+                <td>@issue.item_number</td>
+                <td>@issue.description</td>
+                <td>@issue.rect_date</td>
+                <td>@issue.rate</td>
+                <td>@issue.quantity</td>
+                <td>@issue.issd_date.ToString("yyyy-MM-dd")</td>
+                <td>@issue.category</td>
+                <td>@issue.menuitem</td>
+
+                <td>
+                    <a href="/Issue/Delete/@issue.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+            <td>
+                <strong>Total Rate:</strong> @Model.Sum(issue => issue.rate)
+            </td>
+            <td>
+                <strong>Total Quantity:</strong> @Model.Sum(issue => issue.quantity)
+            </td>
+            <td colspan="3"></td>
+
+</table>

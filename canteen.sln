@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "canteen.UI", "canteen.UI\canteen.UI.csproj", "{CF505852-1504-4E4F-8809-2F99D87FAFAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "canteen.Data", "canteen.Data\canteen.Data.csproj", "{BC99737E-46B9-430F-8911-106A9F49E5A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF505852-1504-4E4F-8809-2F99D87FAFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF505852-1504-4E4F-8809-2F99D87FAFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF505852-1504-4E4F-8809-2F99D87FAFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF505852-1504-4E4F-8809-2F99D87FAFAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC99737E-46B9-430F-8911-106A9F49E5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC99737E-46B9-430F-8911-106A9F49E5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC99737E-46B9-430F-8911-106A9F49E5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC99737E-46B9-430F-8911-106A9F49E5A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD96AE57-EC3D-4323-9D63-B40C041B09D7}
+	EndGlobalSection
+EndGlobal
