@@ -169,6 +169,9 @@ Screenshots
 
 ![Screenshot (305)](https://github.com/MerlinDivya/canteen/assets/91864335/a2aca3a2-273f-4bab-ab83-7ec77ef1e27d)
 
+![Screenshot (308)](https://github.com/MerlinDivya/canteen/assets/91864335/64501aba-4e97-4628-85f4-e15fad60c759)
+
+
 ![Screenshot (306)](https://github.com/MerlinDivya/canteen/assets/91864335/704520d7-f806-4268-afd1-1fbcbf9bd6af)
 
 ![Screenshot (307)](https://github.com/MerlinDivya/canteen/assets/91864335/f9e52776-7ab1-476c-8fd4-09af69b72b92)
